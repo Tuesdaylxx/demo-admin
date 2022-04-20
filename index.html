@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin</title>
+    <link rel="stylesheet" type="text/css" href="./css/index.css" />
+    <!-- 引入element-ui样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+</head>
+
+<body>
+    <div id="app">
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }">校园通知</el-breadcrumb-item>
+            <el-breadcrumb-item>推送通知</el-breadcrumb-item>
+        </el-breadcrumb>
+        <!-- 查询条件 -->
+        <div class="search-wrap">
+            <h2>查询条件</h2>
+            <el-form ref="form" :model="form" label-width="80px" class="search-content">
+                <div class="form-item">
+                    <el-form-item label="姓名">
+                        <el-input v-model="form.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="是否绑定微信">
+                        <el-select v-model="form.wx" placeholder="请选择">
+                            <el-option label="已绑定" value="已绑定"></el-option>
+                            <el-option label="未绑定" value="未绑定"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
+                <div class="form-item">
+                    <el-form-item label="管理员名称">
+                        <el-input v-model="form.admin"></el-input>
+                    </el-form-item>
+                    <el-form-item label="部门选择">
+                        <el-select v-model="form.department" placeholder="请选择">
+                            <el-option label="高一" value="高一"></el-option>
+                            <el-option label="高二" value="高二"></el-option>
+                            <el-option label="高三" value="高三"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="角色选择">
+                        <el-select v-model="form.role" placeholder="请选择">
+                            <el-option label="学生" value="学生"></el-option>
+                            <el-option label="老师" value="老师"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
+                <div class="form-item">
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit" icon="el-icon-search">查询</el-button>
+                        <el-button @click="onReset">重置</el-button>
+                    </el-form-item>
+                </div>
+            </el-form>
+        </div>
+        <!-- 推送 -->
+        <div class="push-wrap">
+            <div class="push-content">
+                <el-button type="primary" @click="handlePushAll" icon="el-icon-s-promotion">批量推送</el-button>
+                <el-table ref="multipleTable" :data="currentData" stripe tooltip-effect="dark" style="width: 100%"
+                    @selection-change="handleSelectionChange">
+                    <el-table-column type="selection" width="55">
+                    </el-table-column>
+                    <el-table-column label="序号" type="index" width="50">
+                    </el-table-column>
+                    <el-table-column prop="name" label="姓名" width="120">
+                    </el-table-column>
+                    <el-table-column label="用户ID" width="120">
+                        <template slot-scope="scope">{{ scope.row.userID }}</template>
+                    </el-table-column>
+                    <el-table-column prop="username" label="用户名" show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="admin" label="管理员名称" show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="department" label="部门选择" show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="role" label="角色名称" show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="wx" label="微信绑定状态" show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button size="mini" type="danger" @click="handlePush(scope.$index, scope.row)">推送
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="page">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                    :current-page="currentPage1" :page-sizes="[5,10, 20, 30]" :page-size="currentNumber"
+                    layout="total, sizes, prev, pager, next, jumper" :total="this.searchData.length">
+                </el-pagination>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 引入element-ui组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <script src="./js/index.js"></script>
+</body>
+
+</html>
